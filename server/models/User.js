@@ -4,8 +4,7 @@ const schema = new Schema({
   name: { type: String },
   email: { type: String, required: true, unique: true },
   password: { type: String },
-  avatar: String,
-  posts: [{ type: Schema.Types.ObjectId, ref: "Post" }]
+  avatar: String
 }, {
   timestamps: true
 });

@@ -1,0 +1,14 @@
+[
+  {
+    "_id": "67rdca3eeb7f6fgeed471198",
+    "content": "Комментарий 1",
+    "userId": 1,
+    "postId": "6509e0fb24923deb3a62bf06"
+  },
+  {
+    "_id": "67rdca3eeb7f6fgeed471198",
+    "content": "Комментарий 2",
+    "userId": 2,
+    "postId": "6509e0fb24923deb3a62bf06"
+  }
+]
