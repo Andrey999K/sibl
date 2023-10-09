@@ -1,0 +1,7 @@
+.text-truncate {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	-webkit-line-clamp: 4;
+	text-overflow: ellipsis;
+}

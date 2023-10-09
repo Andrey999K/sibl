@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import Post from "../Post";
 import PropTypes from "prop-types";
+import postService from "../../../services/post.service";
 
 const PostsList = ({ data, my }) => {
+  const [posts, setPosts] = useState(data);
+  const handleDeletePost = (postId) => {
+    postService.delete(postId)
+      .then(res => {
+        if (res.content) {
+          setPosts(prevState => ([...prevState].filter(item => item._id === postId)));
+        }
+      })
+      .catch(error => console.log(error));
+  };
   return (
     <ul className="flex flex-col gap-7">
-      {data.map(post => <Post key={post.id} post={post} my={my}/>)}
+      {posts.map(post => {
+        if (my) return <Post key={post._id} {...post} onDelete={handleDeletePost}/>;
+        return <Post key={post._id} {...post} />;
+      })}
     </ul>
   );
 };

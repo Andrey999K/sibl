@@ -1,6 +1,7 @@
 const express = require("express");
 const auth = require("../middleware/auth.middleware");
 const Comment = require("../models/Comment");
+const Post = require("../models/Post");
 const router = express.Router({ mergeParams: true });
 
 // /api/comment
@@ -45,6 +46,26 @@ router.delete("/:commentId", auth, async (req, res) => {
     res.status(500).json({
       message: "На сервере произошла ошибка. Попробуйте позже"
     });
+  }
+});
+
+router.patch("/:commentId", auth,  async (req, res) => {
+  try {
+    const { commentId } = req.params;
+
+    // todo:userId === current user id
+    if (commentId) {
+      const updatedComment = await Comment.findByIdAndUpdate(commentId, req.body, { new: true });
+      res.send(updatedComment);
+    } else {
+      res.status(401).json({
+        message: "Unauthorized"
+      });
+    }
+  } catch (e) {
+    res.status(500).json({
+      message: "На сервере произошла ошибка. Попробуйте позже"
+    })
   }
 });
 

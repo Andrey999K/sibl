@@ -1,21 +1,34 @@
 import React, { useState } from "react";
 import Icon from "../../common/Icon";
-import httpService from "../../../services/http.service";
+import { Link, useHistory } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [form, setForm] = useState({
-    login: "",
+    email: "",
     password: ""
   });
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     setForm(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
   };
+  const { logIn } = useAuth();
+  const history = useHistory();
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form);
-    httpService.post("http://localhost:5000/api/v1/login", form)
-      .then(res => console.log(res))
-      .catch(error => console.error(error));
+    logIn(form)
+      .then(res => {
+        console.log(res);
+        if (res._id) {
+          dispatch({ type: "LOG_IN", payload: res });
+          history.push("/");
+        }
+      })
+      .catch(error => console.log(error));
+    // httpService.post("http://localhost:5000/api/v1/login", form)
+    //   .then(res => console.log(res))
+    //   .catch(error => console.error(error));
   };
   return (
     <div className="w-full h-full flex justify-center mx-auto mt-8 md:mt-12">
@@ -25,12 +38,12 @@ const Login = () => {
       >
         <h2 className="text-2xl font-bold">Вход</h2>
         <input
-          value={form.login}
+          value={form.email}
           onChange={handleChange}
           className="w-full rounded text-base px-3 py-2 border-solid border-[1px] border-my-green-200"
           placeholder="E-mail"
           type="text"
-          name="login"
+          name="email"
         />
         <input
           value={form.password}
@@ -41,6 +54,10 @@ const Login = () => {
           name="password"
         />
         <button className="rounded flex justify-center items-center text-white bg-my-green-200 p-2 w-full hover:bg-my-green-300">Войти</button>
+        <Link
+          to="registration"
+          className="rounded flex justify-center items-center text-white bg-black p-2 w-full"
+        >Регистрация</Link>
         <span className="text-sm">Или войдите с помощью других сервисов</span>
         <div className="flex gap-5">
           <div role="button">

@@ -5,8 +5,8 @@ const schema = new Schema({
   description: String,
   image: String,
   content: { type: String, required: true },
-  likes: { type: Number, default: 0 }
-  // userId: { type: Schema.Types.ObjectId, ref: "User", required: true }
+  likes: { type: Number, default: 0 },
+  userId: { type: Schema.Types.ObjectId, ref: "User", required: true }
 }, {
   timestamps: { createdAt: "created_at" }
 });
