@@ -87,6 +87,7 @@ const AuthProvider = ({ children }) => {
         returnSecureToken: true
       });
       setTokens(data);
+      return data;
       // await createUser({
       //   _id: data.localId,
       //   email,
