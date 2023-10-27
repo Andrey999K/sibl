@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import config from "../config";
 
 export const httpAuth = axios.create({
-  baseURL: `${config}/auth/`,
+  baseURL: `${config.apiEndPoint}/auth/`,
   params: {
     key: process.env.REACT_APP_FIREBASE_KEY
   }
