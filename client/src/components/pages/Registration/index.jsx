@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Icon from "../../common/Icon";
 import { useAuth } from "../../../hooks/useAuth";
+import { useHistory } from "react-router-dom";
 
 const Registration = () => {
   const [form, setForm] = useState({
     email: "",
     password: ""
   });
+  const history = useHistory();
   const { signUp } = useAuth();
   const handleChange = (e) => {
     setForm(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
@@ -15,7 +17,7 @@ const Registration = () => {
     e.preventDefault();
     console.log(form);
     signUp(form)
-      .then(res => console.log(res))
+      .then(res => history.push("login"))
       .catch(error => console.error(error));
     // httpService.post(`${config.apiEndPoint}/auth/signUp`, form)
     //   .then(res => console.log(res))
