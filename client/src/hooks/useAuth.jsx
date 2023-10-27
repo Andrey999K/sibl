@@ -7,9 +7,10 @@ import localStorageService, { setTokens } from "../services/localStorage.service
 import Loader from "../components/ui/Loader";
 import notification from "../utils/notification";
 import { useDispatch } from "react-redux";
+import config from "../config";
 
 export const httpAuth = axios.create({
-  baseURL: "http://localhost:8080/api/auth/",
+  baseURL: `${config}/auth/`,
   params: {
     key: process.env.REACT_APP_FIREBASE_KEY
   }
