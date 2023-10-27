@@ -99,13 +99,17 @@ const AuthProvider = ({ children }) => {
       // });
     } catch (error) {
       errorCatcher(error);
-      const { code, message } = error.response.data.error;
+      const { code, message, errors } = error.response.data.error;
       console.log(code, message);
       if (code === 400) {
         if (message === "EMAIL_EXISTS") {
+          notification("error", "Пользователь с таким Email уже существует");
           return {
             email: "Пользователь с таким Email уже существует"
           };
+        } else if (message === "INVALID_DATA") {
+          errors.forEach(error => notification("error", error.msg));
+          return { code, message, errors };
         }
       }
     }
