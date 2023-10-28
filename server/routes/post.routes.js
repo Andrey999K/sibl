@@ -8,10 +8,13 @@ router
   .route("/")
   .get(async (req, res) => {
     try {
-      const { postId } = req.query;
+      const { postId, userId } = req.query;
       if (postId) {
         const post = await Post.findOne({ _id: postId });
         res.status(200).send(post);
+      } else if (userId) {
+        const list = await Post.find({ userId });
+        res.status(200).send(list)
       } else {
         const list = await Post.find();
         res.status(200).send(list)
