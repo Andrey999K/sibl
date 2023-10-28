@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import CreatePost from "./components/pages/CreatePost";
+import MyPosts from "./components/pages/MyPosts";
 
 function App() {
   // const homepage = process.env.PUBLIC_URL;
@@ -21,6 +22,10 @@ function App() {
             <ProtectedRoute
               path="/create_post"
               component={CreatePost}
+            />
+            <ProtectedRoute
+              path="/my_posts"
+              component={MyPosts}
             />
             {getRoutes(publicRoutes)}
             <Redirect to="/" />
