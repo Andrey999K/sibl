@@ -13,12 +13,12 @@ export const publicRoutes = [
   { path: "/registration", component: Registration },
   { path: "/login", component: Login },
   { path: "/post/:postId", component: PostPage },
-  { path: "/my_posts", component: MyPosts },
   { path: "/user/:userId", component: UserPage },
   { path: "/", component: Homepage },
   { path: "", component: NotFound }
 ];
 
 export const protectedRoutes = [
-  { path: "/create_post", component: CreatePost }
+  { path: "/create_post", component: CreatePost },
+  { path: "/my_posts", component: MyPosts }
 ];
