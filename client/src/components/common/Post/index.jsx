@@ -15,7 +15,7 @@ import "./Post.css";
 import formatDate from "../../../utils/formatDate";
 import PostEditor from "../PostEditor";
 
-const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, comments, onDelete }) => {
+const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, comments, onDelete, userId }) => {
   const [onEditPost, setOnEditPost] = useState(false);
   const [post, setPost] = useState({
     id, createdAt, title, content, image, likes, comments
@@ -61,7 +61,7 @@ const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, co
       <div className="p-6 bg-white rounded-xl flex flex-col gap-4 text-base">
         <div className="flex justify-between w-full">
           <div className="flex gap-3 items-center">
-            <Link to={homepage} className="flex gap-3 items-center">
+            <Link to={`${homepage}/user/${userId}`} className="flex gap-3 items-center">
               <Avatar />
               <span>{"Nickname"}</span>
             </Link>
@@ -145,10 +145,7 @@ Post.propTypes = {
   image: PropTypes.string,
   likes: PropTypes.number,
   comments: PropTypes.number,
-  user: PropTypes.shape({
-    nickname: PropTypes.string.isRequired,
-    avatar: PropTypes.string
-  }),
+  userId: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   onDelete: PropTypes.func
 };
