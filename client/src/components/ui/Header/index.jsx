@@ -82,7 +82,6 @@ const Header = () => {
                   <Icon name="arrow-bottom" />
                 </button>
                 {openMenuProfile && <MenuProfile logOut={handleLogOut} closeMenu={() => setOpenMenuProfile(false)} />}
-                {/* <BigButton onClick={handleLogOut}>Выйти</BigButton> */}
               </div>
             </div>
             )

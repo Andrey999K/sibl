@@ -9,14 +9,6 @@ const MyPosts = () => {
   const [posts, setPosts] = useState(null);
   const currentUser = useSelector(getUser());
   useEffect(() => {
-    // setTimeout(() => {
-    //   httpService.get("http://localhost:3000/db/posts.json")
-    //     .then(res => {
-    //       console.log(res.data);
-    //       setPosts(res.data);
-    //     })
-    //     .catch(error => console.error(error));
-    // }, 1000);
     postService.get({ userId: currentUser._id })
       .then(res => setPosts(res))
       .catch(error => console.error(error));

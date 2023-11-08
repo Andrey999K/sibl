@@ -4,7 +4,6 @@ export const setUser = createAsyncThunk("user/set", async (payload, { rejectedWi
   try {
     return payload;
   } catch (error) {
-    console.log(error);
     return rejectedWithValue(error.message);
   }
 });
@@ -13,7 +12,6 @@ export const deleteUser = createAsyncThunk("userItem/delete", async (payload, { 
   try {
     return payload;
   } catch (error) {
-    console.log(error);
     return rejectedWithValue(error.message);
   }
 });
@@ -22,7 +20,6 @@ export const updateUser = createAsyncThunk("userSettings/update", async (payload
   try {
     return payload;
   } catch (error) {
-    console.log(error);
     return rejectWithValue(error.message);
   }
 });

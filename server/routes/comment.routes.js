@@ -53,7 +53,6 @@ router.patch("/:commentId", auth,  async (req, res) => {
   try {
     const { commentId } = req.params;
 
-    // todo:userId === current user id
     if (commentId) {
       const updatedComment = await Comment.findByIdAndUpdate(commentId, req.body, { new: true });
       res.send(updatedComment);

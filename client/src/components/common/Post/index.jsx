@@ -6,11 +6,6 @@ import SubscriptionButton from "../SubscriptionButton";
 import Icon from "../Icon";
 import Like from "../Like";
 import PostMenu from "../../ui/PostMenu";
-// import BigButton from "../BigButton";
-// import { EditorState, convertFromHTML, convertToRaw } from "draft-js";
-// import ContentState from "draft-js/lib/ContentState";
-// import draftToHtml from "draftjs-to-html";
-// import httpService from "../../../services/http.service";
 import "./Post.css";
 import formatDate from "../../../utils/formatDate";
 import PostEditor from "../PostEditor";
@@ -20,35 +15,10 @@ const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, co
   const [post, setPost] = useState({
     id, createdAt, title, content, image, likes, comments
   });
-  // const contentState = convertFromHTML(createContent());
-  // const defaultState = EditorState.createWithContent(
-  //   ContentState.createFromBlockArray(contentState)
-  // );
-  // const [editorState, setEditorState] = useState(defaultState);
-  // const { nickname } = user;
   const homepage = process.env.PUBLIC_URL;
   const handleOnEditPost = () => {
     setOnEditPost(true);
   };
-  // function createContent() {
-  //   let context = "";
-  //   if (title) context += `<h2><strong>${title}</strong></h2>`;
-  //   if (content) context += `<p>${content}</p>`;
-  //   return context;
-  // }
-  // const handleEditPost = () => {
-  //   const contentState = editorState.getCurrentContent();
-  //   const rawContentState = convertToRaw(contentState);
-  //   const newContent = draftToHtml(rawContentState).replace("\n", "").slice(0, -1);
-  //   httpService.put(
-  //     `http://localhost:5000/api/v1/post/${id}`,
-  //     {
-  //       newContent
-  //     }
-  //   )
-  //     .then(res => console.log(res))
-  //     .catch(error => console.log(error));
-  // };
   const handleDeletePost = (postId) => {
     onDelete(postId);
   };

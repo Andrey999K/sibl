@@ -15,13 +15,9 @@ const Registration = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form);
     signUp(form)
       .then(res => history.push("login"))
       .catch(error => console.error(error));
-    // httpService.post(`${config.apiEndPoint}/auth/signUp`, form)
-    //   .then(res => console.log(res))
-    //   .catch(error => console.error(error));
   };
   return (
     <div className="w-full h-full flex justify-center mx-auto mt-8 md:mt-12">

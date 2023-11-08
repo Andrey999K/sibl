@@ -20,16 +20,12 @@ const Login = () => {
     e.preventDefault();
     logIn(form)
       .then(res => {
-        console.log(res);
         if (res._id) {
           dispatch(setUser(res));
           history.push("/");
         }
       })
-      .catch(error => console.log(error));
-    // httpService.post("http://localhost:5000/api/v1/login", form)
-    //   .then(res => console.log(res))
-    //   .catch(error => console.error(error));
+      .catch(() => {});
   };
   return (
     <div className="w-full h-full flex justify-center mx-auto mt-8 md:mt-12">

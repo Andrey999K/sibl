@@ -4,7 +4,6 @@ import postService from "../../../services/post.service";
 import { useHistory } from "react-router-dom";
 
 const CreatePost = () => {
-  // const [editorState, setEditorState] = useState(EditorState.createWithText(""));
   const history = useHistory();
   const [post, setPost] = useState({
     title: "",

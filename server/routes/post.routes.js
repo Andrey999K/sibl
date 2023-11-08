@@ -57,7 +57,6 @@ router
 router.patch("/:postId", auth,  async (req, res) => {
   try {
     const { postId } = req.params;
-    // todo:userId === current user id
     if (postId) {
       const updatedPost = await Post.findByIdAndUpdate(postId, req.body, { new: true });
       res.send(updatedPost);

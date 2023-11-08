@@ -6,8 +6,6 @@ const router = express.Router({ mergeParams: true });
 router.patch("/:userId", auth,  async (req, res) => {
   try {
     const { userId } = req.params;
-
-    // todo:userId === current user id
     if (userId) {
       const updatedUser = await User.findByIdAndUpdate(userId, req.body, { new: true });
       res.send(updatedUser);

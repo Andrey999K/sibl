@@ -37,7 +37,6 @@ http.interceptors.request.use(
       }
     } else {
       if (isExpired) {
-        console.log("Запрос");
         const { data } = await httpAuth.post("token", {
           grant_type: "refresh_token",
           refresh_token: refreshToken
@@ -83,7 +82,6 @@ http.interceptors.response.use(
       error.response.status < 500;
 
     if (!expectedErrors) {
-      console.log(error);
       toast.error("Something was wrong. Try it later");
     }
     return Promise.reject(error);

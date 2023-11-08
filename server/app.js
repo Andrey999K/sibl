@@ -25,12 +25,7 @@ if (process.env.NODE_ENV === 'production') {
   app.get("*", (req, res) => {
     res.sendFile(indexPath);
   })
-} else {
-  console.log("Development");
 }
-
-// user -> andreykutuzov999
-// password -> lDty717H1ELKXNnG
 
 async function start() {
   try {

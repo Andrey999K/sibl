@@ -11,7 +11,6 @@ import CreatePost from "./components/pages/CreatePost";
 import MyPosts from "./components/pages/MyPosts";
 
 function App() {
-  // const homepage = process.env.PUBLIC_URL;
   return (
     <AuthProvider>
       <ToastContainer className="z-[9999]" />

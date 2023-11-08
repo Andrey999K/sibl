@@ -12,7 +12,7 @@ const PostsList = ({ data, my }) => {
           setPosts(prevState => ([...prevState].filter(item => item._id === postId)));
         }
       })
-      .catch(error => console.log(error));
+      .catch(() => {});
   };
   return (
     <ul className="flex flex-col gap-7">
