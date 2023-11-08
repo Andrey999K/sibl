@@ -6,20 +6,18 @@ import { Link, useLocation } from "react-router-dom";
 import Search from "../Search";
 import { useAuth } from "../../../hooks/useAuth";
 import MenuProfile from "../MenuProfile";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { getUser } from "../../../store/user.slicer";
 
 const Header = () => {
   const [openMenuProfile, setOpenMenuProfile] = useState(false);
   const location = useLocation();
   const homepage = process.env.PUBLIC_URL;
   const isLoginPage = location.pathname === `${homepage}/login`;
-  const { currentUser } = useAuth();
-  const userData = currentUser ? currentUser[0] : null;
+  const userData = useSelector(getUser());
   const { logOut } = useAuth();
-  const dispatch = useDispatch();
   const handleLogOut = () => {
     logOut();
-    dispatch({ type: "LOG_OUT" });
   };
   const toggleMenuProfile = () => {
     setOpenMenuProfile(prevState => !prevState);

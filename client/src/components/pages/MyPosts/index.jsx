@@ -3,10 +3,11 @@ import Loader from "../../ui/Loader";
 import PostsList from "../../common/PostsList";
 import postService from "../../../services/post.service";
 import { useSelector } from "react-redux";
+import { getUser } from "../../../store/user.slicer";
 
 const MyPosts = () => {
   const [posts, setPosts] = useState(null);
-  const currentUser = useSelector(state => state.userReducer);
+  const currentUser = useSelector(getUser());
   useEffect(() => {
     // setTimeout(() => {
     //   httpService.get("http://localhost:3000/db/posts.json")

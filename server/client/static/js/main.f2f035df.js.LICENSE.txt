@@ -52,7 +52,7 @@
 
 /**
  * @license React
- * use-sync-external-store-shim.production.min.js
+ * use-sync-external-index-shim.production.min.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -62,7 +62,7 @@
 
 /**
  * @license React
- * use-sync-external-store-shim/with-selector.production.min.js
+ * use-sync-external-index-shim/with-selector.production.min.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
  *

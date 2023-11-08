@@ -8,6 +8,7 @@ import Loader from "../components/ui/Loader";
 import notification from "../utils/notification";
 import { useDispatch } from "react-redux";
 import config from "../config";
+import { deleteUser, setUser, updateUser } from "../store/user.slicer";
 
 export const httpAuth = axios.create({
   baseURL: `${config.apiEndPoint}/auth/`,
@@ -23,12 +24,11 @@ export const useAuth = () => {
 
 const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
-  const [currentUser, setCurrentUser] = useState();
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState(true);
   if (localStorageService.getAccessToken()) {
     userService.getCurrentUser()
-      .then(res => dispatch({ type: "LOG_IN", payload: res.content[0] }))
+      .then(res => dispatch(setUser(res.content[0])))
       .then(error => console.error(error));
   }
 
@@ -39,7 +39,6 @@ const AuthProvider = ({ children }) => {
         {
           email,
           password
-          // returnSecureToken: true
         }
       );
       setTokens(data);
@@ -47,13 +46,11 @@ const AuthProvider = ({ children }) => {
     } catch (error) {
       errorCatcher(error);
       const { code, message } = error.response.data.error;
-      console.log(code, message);
       if (code === 400) {
         switch (message) {
           case "INVALID_PASSWORD":
             notification("error", "Неправильный логин или пароль!");
             throw new Error("Email или пароль введены некорректно");
-
           default:
             notification("error", "Слишком много попыток входа. Попробуйте позже");
             throw new Error(
@@ -65,15 +62,12 @@ const AuthProvider = ({ children }) => {
   }
   function logOut() {
     localStorageService.removeAuthData();
-    setCurrentUser(null);
+    dispatch(deleteUser());
   }
-  // function randomInt(min, max) {
-  //   return Math.floor(Math.random() * (max - min + 1) + min);
-  // }
   async function updateUserData(data) {
     try {
       const { content } = await userService.update(data);
-      setCurrentUser(content);
+      dispatch(updateUser(content));
     } catch (error) {
       errorCatcher(error);
     }
@@ -88,20 +82,9 @@ const AuthProvider = ({ children }) => {
       });
       setTokens(data);
       return data;
-      // await createUser({
-      //   _id: data.localId,
-      //   email,
-      //   // image: `https://avatars.dicebear.com/api/avataaars/${(
-      //   //   Math.random() + 1
-      //   // )
-      //   //   .toString(36)
-      //   //   .substring(7)}.svg`,
-      //   ...rest
-      // });
     } catch (error) {
       errorCatcher(error);
       const { code, message, errors } = error.response.data.error;
-      console.log(code, message);
       if (code === 400) {
         if (message === "EMAIL_EXISTS") {
           notification("error", "Пользователь с таким Email уже существует");
@@ -115,15 +98,6 @@ const AuthProvider = ({ children }) => {
       }
     }
   }
-  // async function createUser(data) {
-  //   try {
-  //     const { content } = await userService.create(data);
-  //     console.log(content);
-  //     setCurrentUser(content);
-  //   } catch (error) {
-  //     errorCatcher(error);
-  //   }
-  // }
   function errorCatcher(error) {
     const { message } = error.response.data;
     setError(message);
@@ -131,7 +105,7 @@ const AuthProvider = ({ children }) => {
   async function getUserData() {
     try {
       const { content } = await userService.getCurrentUser();
-      setCurrentUser(content);
+      dispatch(setUser(content));
       return content[0];
     } catch (error) {
       errorCatcher(error);
@@ -154,7 +128,7 @@ const AuthProvider = ({ children }) => {
   }, [error]);
   return (
     <AuthContext.Provider
-      value={{ signUp, logIn, currentUser, logOut, updateUserData }}
+      value={{ signUp, logIn, logOut, updateUserData }}
     >
       {!isLoading ? children : <Loader />}
     </AuthContext.Provider>

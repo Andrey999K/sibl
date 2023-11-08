@@ -10,12 +10,13 @@ import formatDate from "../../../utils/formatDate";
 import PostMenu from "../../ui/PostMenu";
 import PostEditor from "../../common/PostEditor";
 import { useSelector } from "react-redux";
+import { getUser } from "../../../store/user.slicer";
 
 const PostPage = () => {
   const [post, setPost] = useState(null);
   const [onEditPost, setOnEditPost] = useState(false);
   const { postId } = useParams();
-  const currentUser = useSelector(state => state.userReducer);
+  const currentUser = useSelector(getUser());
   const homepage = process.env.PUBLIC_URL;
   const history = useHistory();
   // useEffect(() => {

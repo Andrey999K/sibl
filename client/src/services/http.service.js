@@ -37,6 +37,7 @@ http.interceptors.request.use(
       }
     } else {
       if (isExpired) {
+        console.log("Запрос");
         const { data } = await httpAuth.post("token", {
           grant_type: "refresh_token",
           refresh_token: refreshToken

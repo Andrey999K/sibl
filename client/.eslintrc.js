@@ -19,10 +19,9 @@ module.exports = {
     "src/dev/"
   ],
   rules: {
-    "semi": [2, "always"],
-    "space-before-function-paren": ["error", "never"],
-    "quotes": ["error", "double", { "allowTemplateLiterals": true }],
-    "no-multiple-empty-lines": "off",
-    "no-trailing-spaces": "off"
+    semi: [1, "always"],
+    "space-before-function-paren": "off",
+    quotes: ["warn", "double", { allowTemplateLiterals: true }],
+    "no-unused-vars": "warn"
   }
 };

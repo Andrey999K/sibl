@@ -3,6 +3,7 @@ import Icon from "../../common/Icon";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { useDispatch } from "react-redux";
+import { setUser } from "../../../store/user.slicer";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -21,7 +22,7 @@ const Login = () => {
       .then(res => {
         console.log(res);
         if (res._id) {
-          dispatch({ type: "LOG_IN", payload: res });
+          dispatch(setUser(res));
           history.push("/");
         }
       })
