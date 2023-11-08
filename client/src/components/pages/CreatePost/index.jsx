@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import BigButton from "../../common/BigButton";
+import Button from "../../common/Button";
 import postService from "../../../services/post.service";
 import { useHistory } from "react-router-dom";
 
@@ -46,7 +46,7 @@ const CreatePost = () => {
             value={post.content}
           >{post.content}</textarea>
         </label>
-        <BigButton className="mt-5">Создать пост</BigButton>
+        <Button className="mt-5">Создать пост</Button>
       </form>
       {/* <EditorPost editorState={editorState} setEditorState={setEditorState}/> */}
     </div>

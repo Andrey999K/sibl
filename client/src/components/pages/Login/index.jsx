@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../store/user.slicer";
+import TextField from "../../common/TextField";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -11,8 +12,8 @@ const Login = () => {
     password: ""
   });
   const dispatch = useDispatch();
-  const handleChange = (e) => {
-    setForm(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
+  const handleChange = ({ name, value }) => {
+    setForm(prevState => ({ ...prevState, [name]: value }));
   };
   const { logIn } = useAuth();
   const history = useHistory();
@@ -34,21 +35,20 @@ const Login = () => {
           className="max-w-[440px] w-full flex flex-col items-center gap-4 p-5 bg-white rounded"
       >
         <h2 className="text-2xl font-bold">Вход</h2>
-        <input
+        <TextField
           value={form.email}
           onChange={handleChange}
-          className="w-full rounded text-base px-3 py-2 border-solid border-[1px] border-my-green-200"
-          placeholder="E-mail"
-          type="text"
           name="email"
+          className="text-base !px-3 !py-2 border-solid !border-my-green-200"
+          placeholder="E-mail"
         />
-        <input
+        <TextField
           value={form.password}
           onChange={handleChange}
-          className="w-full rounded text-base px-3 py-2 border-solid border-[1px] border-my-green-200"
+          name="password"
+          className="text-base !px-3 !py-2 border-solid !border-my-green-200"
           placeholder="Пароль"
           type="password"
-          name="password"
         />
         <button className="rounded flex justify-center items-center text-white bg-my-green-200 p-2 w-full hover:bg-my-green-300">Войти</button>
         <Link

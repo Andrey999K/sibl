@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Logo from "../Logo";
-import BigButton from "../../common/BigButton";
 import Icon from "../../common/Icon";
 import { Link, useLocation } from "react-router-dom";
 import Search from "../Search";
@@ -8,6 +7,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import MenuProfile from "../MenuProfile";
 import { useSelector } from "react-redux";
 import { getUser } from "../../../store/user.slicer";
+import ButtonLink from "../../common/ButtonLink";
 
 const Header = () => {
   const [openMenuProfile, setOpenMenuProfile] = useState(false);
@@ -67,10 +67,9 @@ const Header = () => {
             <div className="flex items-center w-full">
               <Search/>
             </div>
-            <BigButton
-              link={true}
+            <ButtonLink
               url={`${process.env.PUBLIC_URL}/create_post`}
-            >Создать</BigButton>
+            >Создать</ButtonLink>
           </div>
         }
         {userData
@@ -85,7 +84,7 @@ const Header = () => {
               </div>
             </div>
             )
-          : <BigButton link={true} url={`${process.env.PUBLIC_URL}/login`}>Войти</BigButton>
+          : <ButtonLink url={`${process.env.PUBLIC_URL}/login`}>Войти</ButtonLink>
         }
       </div>
     </header>

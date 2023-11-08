@@ -100,7 +100,7 @@ const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, co
         />
         /* <EditorPost editorState={editorState} setEditorState={setEditorState}/>
          <div className="ml-9 mt-auto h-full flex items-end">
-          <BigButton onClick={handleEditPost}>Изменить</BigButton>
+          <Button onClick={handleEditPost}>Изменить</Button>
          </div> */
       )}
     </>
