@@ -36,12 +36,14 @@ router.post("/signUp", [
       }
 
       const hashedPassword = await bcrypt.hash(password, 12);
-
+      const nickname = "user" + Date.now();
       const newUser = await User.create({
         ...generateUserData(),
         ...req.body,
-        password: hashedPassword
+        password: hashedPassword,
+        nickname
       });
+
 
       const tokens = tokenService.generate({ _id: newUser._id });
       await tokenService.save(newUser._id, tokens.refreshToken);
@@ -117,13 +119,12 @@ router.post("/token", async (req, res) => {
     const { refresh_token: refreshToken } = req.body;
     const data = tokenService.validateRefresh(refreshToken);
     const dbToken = await tokenService.findToken(refreshToken);
-
     if (isTokenInvalid(data, dbToken)) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
     const tokens = await tokenService.generate({
-      id: data._id
+      _id: data._id
     });
     await tokenService.save(data._id, tokens.refreshToken)
 

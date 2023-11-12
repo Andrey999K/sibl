@@ -8,16 +8,44 @@ router
   .route("/")
   .get(async (req, res) => {
     try {
-      const { postId, userId } = req.query;
+      const { postId, userId, search } = req.query;
       if (postId) {
         const post = await Post.findOne({ _id: postId });
-        res.status(200).send(post);
+        const user = await User.findOne({ _id: post.userId });
+        res.status(200).send({ ...post._doc, nickname: user.nickname });
       } else if (userId) {
-        const list = await Post.find({ userId });
-        res.status(200).send(list)
+        const list = search
+          ? await Post.find({
+            $and: [
+              { userId },
+              {
+                $or: [
+                  { title: { $regex: search, $options: "i" } },
+                  { content: { $regex: search, $options: "i" } },
+                ],
+              },
+            ],
+          })
+          : await Post.find({ userId });
+        const newList = await Promise.all(list.map(async item => {
+          const user = await User.findOne({ _id: item.userId });
+          return { ...item.toObject(), nickname: user.nickname };
+        }));
+        res.status(200).send(newList)
       } else {
-        const list = await Post.find();
-        res.status(200).send(list)
+        const list = search
+          ? await Post.find({
+            $or: [
+              { title: { $regex: search, $options: "i" } },
+              { content: { $regex: search, $options: "i" } },
+            ]
+          })
+          : await Post.find();
+        const newList = await Promise.all(list.map(async item => {
+          const user = await User.findOne({ _id: item.userId });
+          return { ...item.toObject(), nickname: user.nickname };
+        }));
+        res.status(200).send(newList);
       }
     } catch (e) {
       res.status(500).json({
@@ -27,6 +55,9 @@ router
   })
   .post(auth, async (req, res) => {
     try {
+      console.log(req.body);
+      console.log({ user: req.user });
+      console.log(req.user._id);
       const newPost= await Post.create({
         ...req.body,
         userId: req.user._id

@@ -3,12 +3,15 @@ import PropTypes from "prop-types";
 
 const Textarea = ({ value, onChange, label, name, placeholder, className }) => {
   const classes = "p-2 rounded shadow-inner border-black/20 border-[1px]" + (className ? " " + className : "");
+  const handlerChange = ({ target }) => {
+    onChange({ name, value: target.value });
+  };
   return (
     <label className="flex flex-col gap-2 w-full">
       <span>{label}</span>
       <textarea
         value={value}
-        onChange={onChange}
+        onChange={handlerChange}
         name={name}
         placeholder={placeholder}
         className={classes}

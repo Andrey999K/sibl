@@ -8,7 +8,7 @@
     "image": "1.jpg",
     "likes": 1245,
     "comments": 1138,
-    "user": "6515ccd256098177677e1832"
+    "user": "654d016e96818c0ffd4aaa26"
   },
   {
     "_id": "6509e0fb24923deb3a62bf09",
@@ -19,7 +19,7 @@
     "image": "",
     "likes": 1245,
     "comments": 1138,
-    "user": "6515d2df8a74b9be040ae8b1"
+    "user": "654d016e96818c0ffd4aaa26"
   },
   {
     "_id": "6509e0fb24923deb3a62bf08",
@@ -30,7 +30,7 @@
     "image": "3.jpg",
     "likes": 1245,
     "comments": 1138,
-    "user": "6515ccd256098177677e1832"
+    "user": "654d016e96818c0ffd4aaa26"
   },
   {
     "_id": "6509e0fb24923deb3a62bf07",
@@ -40,6 +40,6 @@
     "image": "3.jpg",
     "likes": 1245,
     "comments": 1138,
-    "user": "6515d2df8a74b9be040ae8b1"
+    "user": "654d016e96818c0ffd4aaa26"
   }
 ]

@@ -1,23 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const TextField = ({ value, onChange, label, name, placeholder, className, type }) => {
-  const classes = "p-2 rounded shadow-inner border-black/20 border-[1px]" + (className ? " " + className : "");
+const TextField = ({ value, onChange, label, name, placeholder, className, type, limit }) => {
+  const classes = "p-2 w-full rounded shadow-inner border-black/20 border-[1px] outline-none" + (className ? " " + className : "") +
+    (limit ? " pr-8" : "");
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (limit && value.length > limit) return;
     onChange({ name, value });
   };
   return (
     <label className="flex flex-col gap-2 w-full">
       {!!label && <span>{label}</span>}
-      <input
-        value={value}
-        onChange={handleChange}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        className={classes}
-      />
+      <div className="w-full relative">
+        <input
+          value={value}
+          onChange={handleChange}
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          className={classes}
+        />
+        {!!limit && <span className="absolute top-[10px] right-3 text-sm text-gray-400">{limit - value.length}</span>}
+      </div>
     </label>
   );
 };
@@ -33,7 +38,8 @@ TextField.propTypes = {
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   className: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
+  limit: PropTypes.number
 };
 
 export default TextField;

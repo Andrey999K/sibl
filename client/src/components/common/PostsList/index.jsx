@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Post from "../Post";
 import PropTypes from "prop-types";
 import postService from "../../../services/post.service";
@@ -14,6 +14,9 @@ const PostsList = ({ data, my }) => {
       })
       .catch(() => {});
   };
+  useEffect(() => {
+    setPosts(data);
+  }, [data]);
   return (
     <ul className="flex flex-col gap-7">
       {posts.map(post => {

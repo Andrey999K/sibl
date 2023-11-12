@@ -8,7 +8,7 @@ router.patch("/:userId", auth,  async (req, res) => {
     const { userId } = req.params;
     if (userId) {
       const updatedUser = await User.findByIdAndUpdate(userId, req.body, { new: true });
-      res.send(updatedUser);
+      res.send(updatedUser.nickname);
     } else {
       res.status(401).json({
         message: "Unauthorized"

@@ -2,18 +2,15 @@ import React, { useState } from "react";
 import Avatar from "../Avatar";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import SubscriptionButton from "../SubscriptionButton";
-import Icon from "../Icon";
-import Like from "../Like";
 import PostMenu from "../../ui/PostMenu";
 import "./Post.css";
 import formatDate from "../../../utils/formatDate";
 import PostEditor from "../PostEditor";
 
-const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, comments, onDelete, userId }) => {
+const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, comments, onDelete, userId, nickname, avatar }) => {
   const [onEditPost, setOnEditPost] = useState(false);
   const [post, setPost] = useState({
-    id, createdAt, title, content, image, likes, comments
+    id, createdAt, title, content, image, likes, comments, nickname, avatar
   });
   const homepage = process.env.PUBLIC_URL;
   const handleOnEditPost = () => {
@@ -28,17 +25,17 @@ const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, co
   };
   return (
     <>
-      <div className="p-6 bg-white rounded-xl flex flex-col gap-4 text-base">
+      <div className="p-6 bg-white rounded-xl flex flex-col gap-2 text-base">
         <div className="flex justify-between w-full">
           <div className="flex gap-3 items-center">
             <Link to={`${homepage}/user/${userId}`} className="flex gap-3 items-center">
-              <Avatar />
-              <span>{"Nickname"}</span>
+              <Avatar url={avatar} />
+              <span>{post.nickname || "Nickname"}</span>
             </Link>
             <Link to={`${homepage}/post/${post.id}`} className="text-sm text-gray-500">{formatDate(createdAt)}</Link>
           </div>
-          {onDelete
-            ? (
+          {onDelete &&
+            (
               <div className="flex items-center">
                 <PostMenu
                   postId={post.id}
@@ -50,10 +47,7 @@ const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, co
                   }
                 />
               </div>
-              )
-            : (
-              <SubscriptionButton/>
-              )
+            )
           }
         </div>
         {!!post.title && <h2 className="font-bold text-xl">{post.title}</h2>}
@@ -77,18 +71,6 @@ const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, co
             />
           </div>
         )}
-        <div className="flex gap-3">
-          <div className="flex gap-2">
-            <Like/>
-            <span>{likes || "0"}</span>
-          </div>
-          <div className="flex gap-2">
-            <div className="cursor-pointer hover:text-my-green-200 flex items-center justify-center">
-              <Icon name="comment" />
-            </div>
-            <span>{comments || "0"}</span>
-          </div>
-        </div>
       </div>
       {onEditPost && (
         <PostEditor
@@ -98,10 +80,6 @@ const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, co
           closeEditor={() => setOnEditPost(false)}
           updatePost={handleEditPost}
         />
-        /* <EditorPost editorState={editorState} setEditorState={setEditorState}/>
-         <div className="ml-9 mt-auto h-full flex items-end">
-          <Button onClick={handleEditPost}>Изменить</Button>
-         </div> */
       )}
     </>
   );
@@ -117,7 +95,9 @@ Post.propTypes = {
   comments: PropTypes.number,
   userId: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
+  nickname: PropTypes.string,
+  avatar: PropTypes.string
 };
 
 export default Post;

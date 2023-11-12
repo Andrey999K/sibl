@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Avatar from "../../common/Avatar";
 import { Link, useHistory, useParams } from "react-router-dom";
-import SubscriptionButton from "../../common/SubscriptionButton";
-import Icon from "../../common/Icon";
-import Like from "../../common/Like";
 import Loader from "../../ui/Loader";
 import postService from "../../../services/post.service";
 import formatDate from "../../../utils/formatDate";
@@ -55,17 +52,15 @@ const PostPage = () => {
         />
       )}
       <div className="w-full max-w-screen-lg ml-auto my-12">
-      <div className="bg-white rounded p-5 flex flex-col gap-5">
+      <div className="bg-white rounded p-5 flex flex-col gap-3">
         <div className="flex justify-between">
         <div className="flex gap-4 items-center">
-          <Link to={homepage} className="flex gap-3 items-center">
+          <Link to={`${homepage}/user/${post.userId}`} className="flex gap-3 items-center">
             <Avatar/>
             <div className="flex flex-col">
-              <span className="text-sm font-medium">ru_vds</span>
-              <span className="text-xs text-gray-400">1,3 млн подписчиков</span>
+              <span className="text-sm font-medium">{post.nickname}</span>
             </div>
           </Link>
-          <SubscriptionButton/>
           <span className="text-base text-gray-400">{formatDate(post.created_at)}</span>
         </div>
         {(currentUser && currentUser._id === post.userId) && (
@@ -77,19 +72,7 @@ const PostPage = () => {
           />
         )}
       </div>
-        <h2 className="font-medium text-2xl">{post.title}</h2>
-        <div className="flex gap-3 items-center">
-        <div className="flex gap-2 items-center">
-          <Like/>
-          <span>1245</span>
-        </div>
-        <div className="flex gap-2 items-center">
-          <div>
-            <Icon name="eye" />
-          </div>
-          <span>5456</span>
-        </div>
-      </div>
+      <h2 className="font-medium text-2xl">{post.title}</h2>
       {post.image && (
         <div className="rounded-lg overflow-hidden w-full">
           <img className="w-full" src={`/images/${post.image}`} alt="Картинка"/>
@@ -99,24 +82,6 @@ const PostPage = () => {
         className="flex flex-col gap-5"
         dangerouslySetInnerHTML={{ __html: post.content }}
       ></div>
-        {/* <p>
-          Хочу рассказать о пяти простых React-хуках, которые пригодятся в любом проекте. Причём, полезность этих хуков не зависит от того, в каком именно приложении их будут использовать. Описывая каждый из них, я рассказываю о его реализации и привожу пример его использования в клиентском коде.
-        </p>
-        <img src={`${homepage}/images/post1_img1.jpg`} alt="Картинка"/>
-        <h3 className="text-xl font-medium">Хук useModalState</h3>
-        <div className="flex flex-col gap-3">
-          <p>
-            Модальные окна широко используются в веб-приложениях, они применяются в самых разных ситуациях. При работе с подобными окнами быстро приходит понимание того, что управление их состоянием — это трудоёмкая задача, решая которую, приходится постоянно выполнять одни и те же рутинные действия. А если имеется код, написание которого отнимает немало сил и времени, код, который приходится постоянно повторять в разных местах приложения, это значит, что такой код имеет смысл абстрагировать, оформив в виде самостоятельной сущности. Хук useModalState — это именно такой код, используемый для управления состоянием модальных окон.
-          </p>
-          <p>
-            Собственные версии этого хука предоставляют многие библиотеки. Одна из них — это Chakra UI. Если вас интересуют подробности об этой библиотеке — вот мой материал о ней.
-          </p>
-          <p>
-            Реализация useModalState весьма проста, даже тривиальна. Но опыт подсказывает мне, что гораздо лучше пользоваться им, чем постоянно заново писать код для управления состоянием модальных окон.
-          </p>
-          <p>Вот код этого хука:</p>
-        </div>
-        <img src={`${homepage}/images/post1_img2.jpg`} alt="Картинка"/> */}
         {post.tags && (
           <div className="flex gap-1">
             <span>Теги:</span>

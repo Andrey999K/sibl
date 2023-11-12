@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../Logo";
 import Icon from "../../common/Icon";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Search from "../Search";
 import { useAuth } from "../../../hooks/useAuth";
 import MenuProfile from "../MenuProfile";
@@ -25,47 +25,11 @@ const Header = () => {
   return (
     <header className="bg-my-green-200 py-2 sticky top-0 z-[9998]">
       <div className="flex justify-between items-center w-full max-w-screen-xl px-8 mx-auto">
-        {!isLoginPage &&
-          <ul className="inline-flex flex-col absolute top-32">
-            <li className="shrink hover:bg-gray-50 py-2 px-3 rounded duration-200">
-              <Link to={homepage} className="flex gap-4">
-                <div className="flex justify-center items-center">
-                  <Icon name="fire"/>
-                </div>
-                <span>Популярное</span>
-              </Link>
-            </li>
-            <li className="shrink hover:bg-gray-50 py-2 px-3 rounded duration-200">
-              <Link to={homepage} className="flex gap-4">
-                <div className="flex justify-center items-center">
-                  <Icon name="clock"/>
-                </div>
-                <span>Свежее</span>
-              </Link>
-            </li>
-            <li className="shrink hover:bg-gray-50 py-2 px-3 rounded duration-200">
-              <Link to={homepage} className="flex gap-4">
-                <div className="flex justify-center items-center">
-                  <Icon name="bookmark"/>
-                </div>
-                <span>Закладки</span>
-              </Link>
-            </li>
-            <li className="shrink hover:bg-gray-50 py-2 px-3 rounded duration-200">
-              <Link to={homepage} className="flex gap-4">
-                <div className="flex justify-center items-center">
-                  <Icon name="list"/>
-                </div>
-                <span>Подписки</span>
-              </Link>
-            </li>
-          </ul>
-        }
         <Logo />
         {!isLoginPage &&
           <div className="w-full max-w-2xl flex items-center gap-4">
             <div className="flex items-center w-full">
-              <Search/>
+              <Search />
             </div>
             <ButtonLink
               url={`${process.env.PUBLIC_URL}/create_post`}
@@ -75,7 +39,7 @@ const Header = () => {
         {userData
           ? (
             <div className="flex items-center gap-3 text-white">
-              <p className="font-semibold text-xl">{userData.email}</p>
+              <p className="font-semibold text-xl">{userData.nickname}</p>
               <div className="relative flex items-center">
                 <button onClick={toggleMenuProfile}>
                   <Icon name="arrow-bottom" />

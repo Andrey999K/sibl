@@ -37,6 +37,12 @@ http.interceptors.request.use(
       }
     } else {
       if (isExpired) {
+        // httpAuth.post("token", {
+        //   grant_type: "refresh_token",
+        //   refresh_token: refreshToken
+        // })
+        //   .then(res => localStorageService.setTokens(res))
+        //   .catch(() => {});
         const { data } = await httpAuth.post("token", {
           grant_type: "refresh_token",
           refresh_token: refreshToken

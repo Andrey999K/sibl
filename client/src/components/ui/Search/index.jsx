@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import TextField from "../../common/TextField";
+import { SearchContext } from "../../../App";
 
 const Search = () => {
-  const [search, setSearch] = useState("");
+  const { search, setSearch } = useContext(SearchContext);
+  // const [search, setSearch] = useState("");
   const handleChange = ({ value }) => {
     setSearch(value);
   };

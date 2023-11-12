@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -16,7 +16,7 @@ export const httpAuth = axios.create({
     key: process.env.REACT_APP_FIREBASE_KEY
   }
 });
-const AuthContext = React.createContext();
+const AuthContext = React.createContext(undefined);
 
 export const useAuth = () => {
   return useContext(AuthContext);
@@ -26,12 +26,16 @@ const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState(true);
-  if (localStorageService.getAccessToken()) {
-    userService.getCurrentUser()
-      .then(res => dispatch(setUser(res.content[0])))
-      .then(error => console.error(error));
-  }
-
+  const checkUserData = useCallback(() => {
+    if (localStorageService.getAccessToken()) {
+      userService.getCurrentUser()
+        .then(res => {
+          dispatch(setUser(res.content[0]));
+        })
+        .catch(() => {})
+        .finally(() => setLoading(false));
+    } else setLoading(false);
+  }, [dispatch]);
   async function logIn({ email, password }) {
     try {
       const { data } = await httpAuth.post(
@@ -48,6 +52,7 @@ const AuthProvider = ({ children }) => {
       const { code, message } = error.response.data.error;
       if (code === 400) {
         switch (message) {
+          case "EMAIL_NOT_FOUND":
           case "INVALID_PASSWORD":
             notification("error", "Неправильный логин или пароль!");
             throw new Error("Email или пароль введены некорректно");
@@ -114,11 +119,7 @@ const AuthProvider = ({ children }) => {
     }
   }
   useEffect(() => {
-    if (localStorageService.getAccessToken()) {
-      getUserData();
-    } else {
-      setLoading(false);
-    }
+    checkUserData();
   }, []);
   useEffect(() => {
     if (error !== null) {

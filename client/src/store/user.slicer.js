@@ -16,7 +16,7 @@ export const deleteUser = createAsyncThunk("userItem/delete", async (payload, { 
   }
 });
 
-export const updateUser = createAsyncThunk("userSettings/update", async (payload, { rejectWithValue }) => {
+export const updateUser = createAsyncThunk("user/update", async (payload, { rejectWithValue }) => {
   try {
     return payload;
   } catch (error) {

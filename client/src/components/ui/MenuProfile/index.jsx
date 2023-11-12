@@ -12,6 +12,7 @@ const MenuProfile = ({ logOut, closeMenu }) => {
       id="menu-profile"
       className="p-4 rounded-lg bg-white text-black flex flex-col gap-2 items-start absolute top-8 right-0 w-40"
     >
+      <Link onClick={() => handleClick()} to="/settings">Настройки</Link>
       <Link onClick={() => handleClick()} to="/my_posts">Мои посты</Link>
       <button onClick={() => handleClick(logOut)}>Выйти</button>
     </div>
