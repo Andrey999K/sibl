@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import configFile from "../config.js";
 
-import localStorageService from "./localStorage.service";
+import localStorageService, { removeAuthData } from "./localStorage.service";
 import { httpAuth } from "../hooks/useAuth";
 
 const http = axios.create({
@@ -88,7 +88,7 @@ http.interceptors.response.use(
       error.response.status < 500;
 
     if (!expectedErrors) {
-      toast.error("Something was wrong. Try it later");
+      localStorageService.removeAuthData();
     }
     return Promise.reject(error);
   }
