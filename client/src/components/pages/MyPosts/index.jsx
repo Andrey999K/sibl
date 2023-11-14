@@ -1,19 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import Loader from "../../ui/Loader";
 import PostsList from "../../common/PostsList";
-import postService from "../../../services/post.service";
 import { useSelector } from "react-redux";
 import { getUser } from "../../../store/user.slicer";
 import { SearchContext } from "../../../App";
+import useDebounce from "../../../hooks/useDebounce";
+import { getPosts } from "../../../utils/getPosts";
 
 const MyPosts = () => {
   const [posts, setPosts] = useState(null);
   const currentUser = useSelector(getUser());
   const { search } = useContext(SearchContext);
+  const sendRequest = useDebounce((search, setPosts, userId) => {
+    getPosts(search, setPosts, userId);
+  });
   useEffect(() => {
-    postService.get({ userId: currentUser._id, search })
-      .then(res => setPosts(res))
-      .catch(error => console.error(error));
+    sendRequest(search, setPosts, currentUser._id);
   }, [search]);
   if (!posts) return <Loader />;
   if (!posts.length) {

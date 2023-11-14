@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import PostsList from "../../common/PostsList";
 import Loader from "../../ui/Loader";
-import postService from "../../../services/post.service";
 import { SearchContext } from "../../../App";
+import { getPosts } from "../../../utils/getPosts";
+import useDebounce from "../../../hooks/useDebounce";
 
 const Homepage = () => {
   const [posts, setPosts] = useState(null);
   const { search } = useContext(SearchContext);
+  const sendRequest = useDebounce((search, setPosts) => {
+    getPosts(search, setPosts);
+  });
   useEffect(() => {
-    postService.get({ search })
-      .then(res => setPosts(res))
-      .catch(error => console.error(error));
+    sendRequest(search, setPosts);
   }, [search]);
   if (!posts) return <Loader />;
   if (!posts.length) {

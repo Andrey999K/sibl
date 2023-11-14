@@ -1,18 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
 import Loader from "../../ui/Loader";
 import PostsList from "../../common/PostsList";
-import postService from "../../../services/post.service";
 import { useParams } from "react-router-dom";
 import { SearchContext } from "../../../App";
+import useDebounce from "../../../hooks/useDebounce";
+import { getPosts } from "../../../utils/getPosts";
 
 const UserPage = () => {
   const [posts, setPosts] = useState(null);
   const { userId } = useParams();
   const { search } = useContext(SearchContext);
+  const sendRequest = useDebounce((search, setPosts, userId) => {
+    getPosts(search, setPosts, userId);
+  });
   useEffect(() => {
-    postService.get({ userId, search })
-      .then(res => setPosts(res))
-      .catch(error => console.error(error));
+    sendRequest(search, setPosts, userId);
   }, [search]);
   if (!posts) return <Loader />;
   if (!posts.length) {
