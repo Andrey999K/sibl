@@ -33,6 +33,7 @@ router
         }));
         res.status(200).send(newList)
       } else {
+        console.log({ search });
         const list = search
           ? await Post.find({
             $or: [
@@ -41,6 +42,7 @@ router
             ]
           })
           : await Post.find();
+        console.log({ list });
         const newList = await Promise.all(list.map(async item => {
           const user = await User.findOne({ _id: item.userId });
           return { ...item.toObject(), nickname: user.nickname };

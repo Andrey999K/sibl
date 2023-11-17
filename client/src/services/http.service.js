@@ -1,8 +1,7 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 import configFile from "../config.js";
 
-import localStorageService, { removeAuthData } from "./localStorage.service";
+import localStorageService from "./localStorage.service";
 import { httpAuth } from "../hooks/useAuth";
 
 const http = axios.create({
@@ -37,18 +36,18 @@ http.interceptors.request.use(
       }
     } else {
       if (isExpired) {
-        // httpAuth.post("token", {
-        //   grant_type: "refresh_token",
-        //   refresh_token: refreshToken
-        // })
-        //   .then(res => localStorageService.setTokens(res))
-        //   .catch(() => {});
-        const { data } = await httpAuth.post("token", {
+        httpAuth.post("token", {
           grant_type: "refresh_token",
           refresh_token: refreshToken
-        });
-
-        localStorageService.setTokens(data);
+        })
+          .then(res => localStorageService.setTokens(res))
+          .catch(error => console.log(error));
+        // const { data } = await httpAuth.post("token", {
+        //   grant_type: "refresh_token",
+        //   refresh_token: refreshToken
+        // });
+        //
+        // localStorageService.setTokens(data);
       }
       const accessToken = localStorageService.getAccessToken();
       if (accessToken) {
