@@ -4,7 +4,6 @@ import { SearchContext } from "../../../App";
 
 const Search = () => {
   const { search, setSearch } = useContext(SearchContext);
-  // const [search, setSearch] = useState("");
   const handleChange = ({ value }) => {
     setSearch(value);
   };

@@ -48,7 +48,6 @@ const CreatePost = () => {
         </label>
         <Button className="mt-5">Создать пост</Button>
       </form>
-      {/* <EditorPost editorState={editorState} setEditorState={setEditorState}/> */}
     </div>
   );
 };
