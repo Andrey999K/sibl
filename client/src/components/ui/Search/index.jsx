@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import TextField from "../../common/TextField";
-import { SearchContext } from "../../../App";
+import { useDispatch, useSelector } from "react-redux";
+import { getSearch, setSearch } from "../../../store/search.slicer";
 
 const Search = () => {
-  const { search, setSearch } = useContext(SearchContext);
+  const search = useSelector(getSearch());
+  const dispatch = useDispatch();
   const handleChange = ({ value }) => {
-    setSearch(value);
+    dispatch(setSearch(value));
   };
   return (
     <TextField

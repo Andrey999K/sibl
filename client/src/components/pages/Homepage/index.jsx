@@ -1,13 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PostsList from "../../common/PostsList";
 import Loader from "../../ui/Loader";
-import { SearchContext } from "../../../App";
 import { getPosts } from "../../../utils/getPosts";
 import useDebounce from "../../../hooks/useDebounce";
+import { useSelector } from "react-redux";
+import { getSearch } from "../../../store/search.slicer";
 
 const Homepage = () => {
   const [posts, setPosts] = useState(null);
-  const { search } = useContext(SearchContext);
+  const search = useSelector(getSearch());
   const sendRequest = useDebounce((search, setPosts) => {
     getPosts(search, setPosts);
   });

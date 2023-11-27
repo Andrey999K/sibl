@@ -2,13 +2,13 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import axios from "axios";
-import userService from "../services/user.service";
 import localStorageService, { setTokens } from "../services/localStorage.service";
 import Loader from "../components/ui/Loader";
 import notification from "../utils/notification";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import config from "../config";
-import { deleteUser, setUser, updateUser } from "../store/user.slicer";
+import { deleteUser, getLoadingUser, setUser, updateUser } from "../store/user.slicer";
+import { useHistory } from "react-router-dom";
 
 export const httpAuth = axios.create({
   baseURL: `${config.apiEndPoint}/auth/`,
@@ -25,16 +25,10 @@ export const useAuth = () => {
 const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
-  const [isLoading, setLoading] = useState(true);
+  const isLoading = useSelector(getLoadingUser());
+  const history = useHistory();
   const checkUserData = useCallback(() => {
-    if (localStorageService.getAccessToken()) {
-      userService.getCurrentUser()
-        .then(res => {
-          dispatch(setUser(res.content[0]));
-        })
-        .catch(() => {})
-        .finally(() => setLoading(false));
-    } else setLoading(false);
+    dispatch(setUser());
   }, [dispatch]);
   async function logIn({ email, password }) {
     try {
@@ -46,7 +40,10 @@ const AuthProvider = ({ children }) => {
         }
       );
       setTokens(data);
-      return await getUserData();
+      if (data.userId) {
+        dispatch(setUser());
+        history.push("/");
+      }
     } catch (error) {
       errorCatcher(error);
       const { code, message } = error.response.data.error;
@@ -71,8 +68,7 @@ const AuthProvider = ({ children }) => {
   }
   async function updateUserData(data) {
     try {
-      const { content } = await userService.update(data);
-      dispatch(updateUser(content));
+      dispatch(updateUser(data));
     } catch (error) {
       errorCatcher(error);
     }
@@ -106,18 +102,7 @@ const AuthProvider = ({ children }) => {
   function errorCatcher(error) {
     const { message } = error.response.data;
     setError(message);
-  }
-  async function getUserData() {
-    try {
-      const { content } = await userService.getCurrentUser();
-      dispatch(setUser(content));
-      return content[0];
-    } catch (error) {
-      errorCatcher(error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  };
   useEffect(() => {
     checkUserData();
   }, []);

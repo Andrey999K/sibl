@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./user.slicer";
+import searchReducer from "./search.slicer";
 
 const rootReducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  search: searchReducer
 });
 
 const store = configureStore({

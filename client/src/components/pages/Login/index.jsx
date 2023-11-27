@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import Icon from "../../common/Icon";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../../store/user.slicer";
 import TextField from "../../common/TextField";
 
 const Login = () => {
@@ -11,22 +9,13 @@ const Login = () => {
     email: "",
     password: ""
   });
-  const dispatch = useDispatch();
   const handleChange = ({ name, value }) => {
     setForm(prevState => ({ ...prevState, [name]: value }));
   };
   const { logIn } = useAuth();
-  const history = useHistory();
   const handleSubmit = (e) => {
     e.preventDefault();
-    logIn(form)
-      .then(res => {
-        if (res._id) {
-          dispatch(setUser(res));
-          history.push("/");
-        }
-      })
-      .catch(() => {});
+    logIn(form);
   };
   return (
     <div className="w-full h-full flex justify-center mx-auto mt-8 md:mt-12">

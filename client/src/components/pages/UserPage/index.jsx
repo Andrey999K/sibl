@@ -1,15 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Loader from "../../ui/Loader";
 import PostsList from "../../common/PostsList";
 import { useParams } from "react-router-dom";
-import { SearchContext } from "../../../App";
 import useDebounce from "../../../hooks/useDebounce";
 import { getPosts } from "../../../utils/getPosts";
+import { useSelector } from "react-redux";
+import { getSearch } from "../../../store/search.slicer";
 
 const UserPage = () => {
   const [posts, setPosts] = useState(null);
   const { userId } = useParams();
-  const { search } = useContext(SearchContext);
+  const search = useSelector(getSearch());
   const sendRequest = useDebounce((search, setPosts, userId) => {
     getPosts(search, setPosts, userId);
   });
