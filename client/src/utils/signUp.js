@@ -13,7 +13,6 @@ async function signUp({ email, password }) {
     setTokens(data);
     return data;
   } catch (error) {
-    // errorCatcher(error);
     console.log(error);
     const { code, message, errors } = error.response.data.error;
     if (code === 400) {

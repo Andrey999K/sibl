@@ -11,7 +11,6 @@ async function logIn({ email, password }) {
     setTokens(data);
     return data;
   } catch (error) {
-    // errorCatcher(error);
     console.log(error);
     const { code, message } = error.response.data.error;
     if (code === 400) {

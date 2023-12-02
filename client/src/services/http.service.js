@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import axios from "axios";
 import configFile from "../config.js";
 
@@ -9,14 +10,13 @@ const http = axios.create({
 });
 
 http.interceptors.request.use(
-  async function(config) {
+  async function (config) {
     const expiresDate = localStorageService.getTokenExpiresDate();
     const refreshToken = localStorageService.getRefreshToken();
     const isExpired = refreshToken && expiresDate < Date.now();
     if (configFile.isFireBase) {
       const containSlash = /\/$/gi.test(config.url);
-      config.url =
-        (containSlash ? config.url.slice(0, -1) : config.url) + ".json";
+      config.url = (containSlash ? config.url.slice(0, -1) : config.url) + ".json";
       if (isExpired) {
         const { data } = await httpAuth.post("token", {
           grant_type: "refresh_token",
@@ -36,18 +36,13 @@ http.interceptors.request.use(
       }
     } else {
       if (isExpired) {
-        httpAuth.post("token", {
-          grant_type: "refresh_token",
-          refresh_token: refreshToken
-        })
+        httpAuth
+          .post("token", {
+            grant_type: "refresh_token",
+            refresh_token: refreshToken
+          })
           .then(res => localStorageService.setTokens(res))
           .catch(error => console.log(error));
-        // const { data } = await httpAuth.post("token", {
-        //   grant_type: "refresh_token",
-        //   refresh_token: refreshToken
-        // });
-        //
-        // localStorageService.setTokens(data);
       }
       const accessToken = localStorageService.getAccessToken();
       if (accessToken) {
@@ -59,32 +54,29 @@ http.interceptors.request.use(
     }
     return config;
   },
-  function(error) {
+  function (error) {
     return Promise.reject(error);
   }
 );
 
 function transformData(data) {
   return data && !data._id
-    ? Object.keys(data).map((key) => ({
-      ...data[key]
-    }))
+    ? Object.keys(data).map(key => ({
+        ...data[key]
+      }))
     : data;
 }
 
 http.interceptors.response.use(
-  (res) => {
+  res => {
     if (configFile.isFireBase) {
       res.data = { content: transformData(res.data) };
     }
     res.data = { content: res.data };
     return res;
   },
-  function(error) {
-    const expectedErrors =
-      error.response &&
-      error.response.status >= 400 &&
-      error.response.status < 500;
+  function (error) {
+    const expectedErrors = error.response && error.response.status >= 400 && error.response.status < 500;
 
     if (!expectedErrors) {
       localStorageService.removeAuthData();

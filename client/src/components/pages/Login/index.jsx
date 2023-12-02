@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import TextField from "../../common/TextField";
 import logIn from "../../../utils/logIn";
@@ -23,6 +23,9 @@ const Login = () => {
       }
     });
   };
+  useEffect(() => {
+    document.title = "Sibl | Вход";
+  }, []);
   return (
     <MainLayout>
       <div className="w-full h-full flex justify-center mx-auto mt-8 md:mt-12">

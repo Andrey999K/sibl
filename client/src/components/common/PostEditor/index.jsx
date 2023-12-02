@@ -14,7 +14,6 @@ const PostEditor = ({ postId, title, content, closeEditor }) => {
     content
   });
   const dispatch = useDispatch();
-  // const dis
   const handleChange = ({ name, value }) => {
     setPost(prevState => ({ ...prevState, [name]: value }));
   };

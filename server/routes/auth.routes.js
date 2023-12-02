@@ -17,9 +17,9 @@ router.post("/signUp", [
           error: {
             message: "INVALID_DATA",
             code: 400,
-            errors: errors.array()
-          }
-        })
+            errors: errors.array(),
+          },
+        });
       }
 
       const { email, password } = req.body;
@@ -30,9 +30,9 @@ router.post("/signUp", [
         return res.status(400).json({
           error: {
             message: "EMAIL_EXISTS",
-            code: 400
-          }
-        })
+            code: 400,
+          },
+        });
       }
 
       const hashedPassword = await bcrypt.hash(password, 12);
@@ -41,36 +41,35 @@ router.post("/signUp", [
         ...generateUserData(),
         ...req.body,
         password: hashedPassword,
-        nickname
+        nickname,
       });
-
 
       const tokens = tokenService.generate({ _id: newUser._id });
       await tokenService.save(newUser._id, tokens.refreshToken);
 
       res.status(201).send({ ...tokens, userId: newUser._id });
-
     } catch (e) {
       res.status(500).json({
-        message: "На сервере произошла ошибка. Попробуйте позже"
+        message: "На сервере произошла ошибка. Попробуйте позже",
       });
     }
-  }
+  },
 ]);
 
 router.post("/signInWithPassword", [
-  check("email", "Email некорректный").normalizeEmail().isEmail(),
-  check("password", "Пароль не может быть пустым").exists(),
+  check("email", "Некорректный Email.").normalizeEmail().isEmail(),
+  check("password", "Пароль не может быть пустым.").exists(),
   async (req, res) => {
     try {
       const errors = validationResult(req);
+      console.log(errors);
       if (!errors.isEmpty()) {
         return res.status(400).json({
           error: {
             message: "INVALID_DATA",
-            code: 400
-          }
-        })
+            code: 400,
+          },
+        });
       }
 
       const { email, password } = req.body;
@@ -81,33 +80,35 @@ router.post("/signInWithPassword", [
         return res.status(400).send({
           error: {
             message: "EMAIL_NOT_FOUND",
-            code: 400
-          }
-        })
+            code: 400,
+          },
+        });
       }
 
-      const isPasswordEqual = await bcrypt.compare(password, existingUser.password);
+      const isPasswordEqual = await bcrypt.compare(
+        password,
+        existingUser.password,
+      );
 
       if (!isPasswordEqual) {
         return res.status(400).send({
           error: {
             message: "INVALID_PASSWORD",
-            code: 400
-          }
-        })
+            code: 400,
+          },
+        });
       }
 
       const tokens = tokenService.generate({ _id: existingUser._id });
       await tokenService.save(existingUser._id, tokens.refreshToken);
 
-      res.status(200).send({ ...tokens, userId: existingUser._id })
-
+      res.status(200).send({ ...tokens, userId: existingUser._id });
     } catch (e) {
       res.status(500).json({
-        message: "На сервере произошла ошибка. Попробуйте позже"
+        message: "На сервере произошла ошибка. Попробуйте позже",
       });
     }
-  }
+  },
 ]);
 
 function isTokenInvalid(data, dbToken) {
@@ -124,14 +125,14 @@ router.post("/token", async (req, res) => {
     }
 
     const tokens = await tokenService.generate({
-      _id: data._id
+      _id: data._id,
     });
-    await tokenService.save(data._id, tokens.refreshToken)
+    await tokenService.save(data._id, tokens.refreshToken);
 
     res.status(200).send({ ...tokens, userId: data._id });
   } catch (e) {
     res.status(500).json({
-      message: "На сервере произошла ошибка. Попробуйте позже"
+      message: "На сервере произошла ошибка. Попробуйте позже",
     });
   }
 });

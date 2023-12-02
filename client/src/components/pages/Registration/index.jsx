@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import signUp from "../../../utils/signUp";
 import TextField from "../../common/TextField";
@@ -13,6 +13,10 @@ const Registration = () => {
       if (res.userId) history.push("login");
     });
   }
+
+  useEffect(() => {
+    document.title = "Sibl | Регистрация";
+  }, []);
   return (
     <MainLayout>
       <div className="w-full h-full flex justify-center mx-auto mt-8 md:mt-12">
