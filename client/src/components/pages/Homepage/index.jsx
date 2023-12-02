@@ -1,22 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PostsList from "../../common/PostsList";
 import Loader from "../../ui/Loader";
-import { getPosts } from "../../../utils/getPosts";
-import useDebounce from "../../../hooks/useDebounce";
 import { useSelector } from "react-redux";
 import { getSearch } from "../../../store/search.slicer";
+import { getLoadingPostList, getPostList } from "../../../store/postList.slicer";
+import PageTitle from "../../common/PageTitle";
+import MainLayout from "../../../layouts/MainLayout";
 
 const Homepage = () => {
-  const [posts, setPosts] = useState(null);
+  const posts = useSelector(getPostList());
+  const loading = useSelector(getLoadingPostList());
   const search = useSelector(getSearch());
-  const sendRequest = useDebounce((search, setPosts) => {
-    getPosts(search, setPosts);
-  });
-  useEffect(() => {
-    sendRequest(search, setPosts);
-  }, [search]);
-  if (!posts) return <Loader />;
-  if (!posts.length) {
+  const postsSearch = posts.filter(post => post.content.includes(search) || post.title.includes(search));
+  if (loading) return <Loader />;
+  if (!postsSearch.length) {
     return (
       <div className="h-[80dvh] flex justify-center items-center">
         <h3 className="font-semibold text-3xl">Не найдено ни одного поста</h3>
@@ -24,9 +21,10 @@ const Homepage = () => {
     );
   }
   return (
-    <div className="w-[695px] my-12">
-      <PostsList data={posts} />
-    </div>
+    <MainLayout>
+      <PageTitle>Главная</PageTitle>
+      <PostsList data={postsSearch} />
+    </MainLayout>
   );
 };
 

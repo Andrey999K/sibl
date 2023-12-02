@@ -1,7 +1,6 @@
 import postService from "../services/post.service";
 
-export const getPosts = (search, setPosts, userId = false) => {
-  postService.get(userId ? { search, userId } : { search })
-    .then(res => setPosts(res))
-    .catch(error => console.error(error));
+export const getPosts = async payload => {
+  const { search, userId } = payload;
+  return await postService.get(userId ? { search, userId } : { search });
 };

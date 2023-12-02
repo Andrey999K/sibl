@@ -2,26 +2,49 @@ import React, { useState } from "react";
 import Avatar from "../Avatar";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import PostMenu from "../../ui/PostMenu";
 import "./Post.css";
 import formatDate from "../../../utils/formatDate";
 import PostEditor from "../PostEditor";
+import { deletePost } from "../../../store/postList.slicer";
+import { useDispatch } from "react-redux";
+import ContextMenu from "../ContextMenu";
 
-const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, comments, onDelete, userId, nickname, avatar }) => {
+const Post = ({
+  _id: id,
+  created_at: createdAt,
+  title,
+  content,
+  image,
+  likes,
+  comments,
+  onDelete,
+  userId,
+  nickname,
+  avatar
+}) => {
   const [onEditPost, setOnEditPost] = useState(false);
   const [post, setPost] = useState({
-    id, createdAt, title, content, image, likes, comments, nickname, avatar
+    id,
+    createdAt,
+    title,
+    content,
+    image,
+    likes,
+    comments,
+    nickname,
+    avatar
   });
   const homepage = process.env.PUBLIC_URL;
+  const dispatch = useDispatch();
   const handleOnEditPost = () => {
     setOnEditPost(true);
   };
-  const handleDeletePost = (postId) => {
-    onDelete(postId);
-  };
-  const handleEditPost = (newPost) => {
+  const handleEditPost = newPost => {
     setOnEditPost(false);
     setPost(prevState => ({ ...prevState, ...newPost }));
+  };
+  const handleDeletePost = () => {
+    dispatch(deletePost(id));
   };
   return (
     <>
@@ -32,30 +55,24 @@ const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, co
               <Avatar url={avatar} />
               <span>{post.nickname || "Nickname"}</span>
             </Link>
-            <Link to={`${homepage}/post/${post.id}`} className="text-sm text-gray-500">{formatDate(createdAt)}</Link>
+            <Link to={`${homepage}/post/${post.id}`} className="text-sm text-gray-500">
+              {formatDate(createdAt)}
+            </Link>
           </div>
-          {onDelete &&
-            (
-              <div className="flex items-center">
-                <PostMenu
-                  postId={post.id}
-                  list={
-                    [
-                      { text: "Изменить", action: handleOnEditPost },
-                      { text: "Удалить", action: () => handleDeletePost(post.id) }
-                    ]
-                  }
-                />
-              </div>
-            )
-          }
+          {onDelete && (
+            <div className="flex items-center">
+              <ContextMenu
+                list={[
+                  { text: "Изменить", action: handleOnEditPost },
+                  { text: "Удалить", action: () => handleDeletePost(post.id) }
+                ]}
+                icon="menu"
+              />
+            </div>
+          )}
         </div>
         {!!post.title && <h2 className="font-bold text-xl">{post.title}</h2>}
-        {!!post.content && (
-          <div className="text-truncate">
-            {post.content}
-          </div>
-        )}
+        {!!post.content && <div className="text-truncate">{post.content}</div>}
         <Link
           to={`${homepage}/post/${post.id}`}
           className="text-gray-500 cursor-pointer font-medium hover:text-my-green-200"
@@ -64,11 +81,7 @@ const Post = ({ _id: id, created_at: createdAt, title, content, image, likes, co
         </Link>
         {!!image && (
           <div className="rounded-xl overflow-hidden">
-            <img
-              className="m-0 w-full"
-              src={`${homepage}/images/${image}`}
-              alt="Картинка"
-            />
+            <img className="m-0 w-full" src={`${homepage}/images/${image}`} alt="Картинка" />
           </div>
         )}
       </div>

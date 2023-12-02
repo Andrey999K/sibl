@@ -1,36 +1,39 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable multiline-ternary */
+import React from "react";
 import Loader from "../../ui/Loader";
 import PostsList from "../../common/PostsList";
 import { useSelector } from "react-redux";
 import { getUser } from "../../../store/user.slicer";
-import useDebounce from "../../../hooks/useDebounce";
-import { getPosts } from "../../../utils/getPosts";
 import { getSearch } from "../../../store/search.slicer";
+import { getLoadingPostList, getPostByUser } from "../../../store/postList.slicer";
+import PageTitle from "../../common/PageTitle";
+import MainLayout from "../../../layouts/MainLayout";
 
 const MyPosts = () => {
-  const [posts, setPosts] = useState(null);
   const currentUser = useSelector(getUser());
+  const posts = useSelector(getPostByUser(currentUser?._id));
+  const loading = useSelector(getLoadingPostList());
   const search = useSelector(getSearch());
-  const sendRequest = useDebounce((search, setPosts, userId) => {
-    getPosts(search, setPosts, userId);
-  });
-  useEffect(() => {
-    sendRequest(search, setPosts, currentUser._id);
-  }, [search]);
-  if (!posts) return <Loader />;
-  if (!posts.length) {
-    return (
-      <div className="h-[80dvh] flex justify-center items-center">
-        <h3 className="font-semibold text-3xl">
-          {search ? "Не найдено ни одного поста" : "У вас нет ни одного поста."}
-        </h3>
-      </div>
-    );
-  }
+  const postsSearch = posts.filter(post => post.content.includes(search) || post.title.includes(search));
+  if (loading) return <Loader />;
   return (
-    <div className="w-[695px] my-12">
-      <PostsList data={posts} my={true} />
-    </div>
+    <MainLayout>
+      {postsSearch.length ? (
+        <>
+          <PageTitle>Мои посты</PageTitle>
+          <PostsList data={postsSearch} my={true} />
+        </>
+      ) : (
+        <>
+          <PageTitle>Мои посты</PageTitle>
+          <div className="flex justify-center items-center h-full">
+            <h3 className="font-semibold text-3xl">
+              {search ? "Не найдено ни одного поста" : "У вас нет ни одного поста."}
+            </h3>
+          </div>
+        </>
+      )}
+    </MainLayout>
   );
 };
 

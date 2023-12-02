@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./user.slicer";
 import searchReducer from "./search.slicer";
+import postListReducer from "./postList.slicer";
 
 const rootReducer = combineReducers({
   user: userReducer,
-  search: searchReducer
+  search: searchReducer,
+  postList: postListReducer
 });
 
 const store = configureStore({

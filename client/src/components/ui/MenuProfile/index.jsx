@@ -1,27 +1,26 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import logOut from "../../../utils/logOut";
+import { deleteUser } from "../../../store/user.slicer";
+import { useDispatch } from "react-redux";
+import ContextMenu from "../../common/ContextMenu";
 
-const MenuProfile = ({ logOut, closeMenu }) => {
-  const handleClick = (func) => {
-    closeMenu();
-    if (func) func();
+const MenuProfile = () => {
+  const dispatch = useDispatch();
+  const handleLogOut = () => {
+    logOut();
+    dispatch(deleteUser());
   };
   return (
-    <div
-      id="menu-profile"
-      className="p-4 rounded-lg bg-white text-black flex flex-col gap-2 items-start absolute top-8 right-0 w-40"
-    >
-      <Link onClick={() => handleClick()} to="/settings">Настройки</Link>
-      <Link onClick={() => handleClick()} to="/my_posts">Мои посты</Link>
-      <button onClick={() => handleClick(logOut)}>Выйти</button>
-    </div>
+    <ContextMenu
+      list={[
+        { text: "Настройки", action: "/settings" },
+        { text: "Мои посты", action: "/my_posts" },
+        { text: "Выход", action: handleLogOut }
+      ]}
+      icon="arrow-bottom"
+      className="w-[150px] top-8 flex flex-col gap-2"
+    />
   );
-};
-
-MenuProfile.propTypes = {
-  logOut: PropTypes.func.isRequired,
-  closeMenu: PropTypes.func.isRequired
 };
 
 export default MenuProfile;

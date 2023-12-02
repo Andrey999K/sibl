@@ -38,7 +38,8 @@ const setPending = state => {
 
 const initialState = {
   user: null,
-  isLoading: false
+  isLoading: true,
+  error: null
 };
 
 const userSlice = createSlice({
@@ -46,11 +47,12 @@ const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
+    builder.addCase(setUser.pending, setPending);
     builder.addCase(setUser.fulfilled, (state, { payload }) => {
       state.isLoading = false;
       state.user = payload;
     });
-    builder.addCase(setUser.pending, setPending);
+    builder.addCase(deleteUser.pending, setPending);
     builder.addCase(deleteUser.fulfilled, (state, _) => {
       state.isLoading = false;
       state.user = null;

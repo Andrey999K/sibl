@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import Icon from "../../common/Icon";
-import PropTypes from "prop-types";
+import Icon from "../Icon";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const PostMenu = ({ list }) => {
+const ContextMenu = ({ list, icon, className }) => {
+  const menuElem = useRef(null);
   const [openMenu, setOpenMenu] = useState(false);
-  const postElem = useRef(null);
   const handleToggleMenu = () => {
     setOpenMenu(prevState => !prevState);
   };
@@ -14,7 +14,7 @@ const PostMenu = ({ list }) => {
     action();
   };
   const handleClickOut = e => {
-    if (e.target.closest(".postMenu") !== postElem.current) {
+    if (e.target.closest(".menuElem") !== menuElem.current) {
       setOpenMenu(false);
     }
   };
@@ -25,12 +25,16 @@ const PostMenu = ({ list }) => {
     };
   }, []);
   return (
-    <div ref={postElem} className="relative flex items-center postMenu">
-      <button onClick={handleToggleMenu} className="inline">
-        <Icon name="menu" />
+    <div ref={menuElem} className="menuElem relative flex justify-center items-center">
+      <button onClick={handleToggleMenu}>
+        <Icon name={icon} />
       </button>
       {openMenu && (
-        <ul className="absolute top-6 right-0 p-4 bg-white shadow-lg rounded-lg">
+        <ul
+          className={
+            "absolute text-black top-6 right-0 p-4 bg-white shadow-lg rounded-lg" + (className ? " " + className : "")
+          }
+        >
           {list.map((item, index) => {
             if (typeof item.action === "string") {
               return (
@@ -52,17 +56,15 @@ const PostMenu = ({ list }) => {
   );
 };
 
-PostMenu.defaultProps = {
-  list: []
-};
-
-PostMenu.propTypes = {
+ContextMenu.propTypes = {
   list: PropTypes.arrayOf(
     PropTypes.shape({
       text: PropTypes.string.isRequired,
       action: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
     })
-  )
+  ).isRequired,
+  icon: PropTypes.string,
+  className: PropTypes.string
 };
 
-export default PostMenu;
+export default ContextMenu;
