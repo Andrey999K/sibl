@@ -35,7 +35,9 @@
     "page": "generate-react component --type=page",
     "format": "npx prettier --write .",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "sb": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "eslintConfig": {
     "extends": [
@@ -57,14 +59,26 @@
   },
   "devDependencies": {
     "@react-buddy/ide-toolbox": "^2.3.1",
+    "@storybook/addon-essentials": "^7.6.5",
+    "@storybook/addon-interactions": "^7.6.5",
+    "@storybook/addon-links": "^7.6.5",
+    "@storybook/addon-onboarding": "^1.0.10",
+    "@storybook/blocks": "^7.6.5",
+    "@storybook/preset-create-react-app": "^7.6.5",
+    "@storybook/react": "^7.6.5",
+    "@storybook/react-webpack5": "^7.6.5",
+    "@storybook/test": "^7.6.5",
     "eslint": "^8.39.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-storybook": "^0.6.15",
     "generate-react-cli": "^8.3.0",
     "gh-pages": "^5.0.0",
-    "tailwindcss": "^3.3.2"
+    "storybook": "^7.6.5",
+    "tailwindcss": "^3.3.2",
+    "webpack": "^5.89.0"
   }
 }
