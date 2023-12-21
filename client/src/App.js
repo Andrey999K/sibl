@@ -9,7 +9,7 @@ import MyPosts from "./components/pages/MyPosts";
 import Settings from "./components/pages/Settings";
 import AppLoader from "./hoc/AppLoader";
 
-// /ewfewfewfew
+// test_commit
 function App() {
   return (
     <AppLoader>
